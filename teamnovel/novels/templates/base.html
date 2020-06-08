@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TeamNovel</title>
+    {% load staticfiles %}
+    <link rel="icon" href="{% static 'favicon/favicon.ico' %}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+      <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+     <!-- Google Noto Sans Pro font -->
+    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+
+       <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="/static/css/style.css"  />
+</head>
+<main>
+<body>
+
+<script src="/static/js/app.js"></script>
+{% block header %}
+<nav id="background_nav">
+<a href="#" data-target="slide-out" class="sidenav-trigger btn" style="display: block"><i class="material-icons">menu</i></a>
+</nav>
+
+     <ul id="slide-out" class="sidenav" id="sidenav_background">
+<!--    <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>-->
+         {% if request.user.is_authenticated == False %}
+        <li><a href="/login"> Zaloguj się</a></li>
+        <li><a href="/rejestracja">Zarejestruj się</a></li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+        <li> <a href="/"> Strona główna </a> </li>
+        <li> <a href="{% url 'new_team' %}">Stwórz zespół</a></li>
+        <li> <a href="{% url 'user_teams' %}">Moje zespoły</a></li>
+        <li><a href="{% url 'published_novels' %}"> Opublikowane </a></li>
+             <li><div class="divider"></div></li>
+         <li><a href="{% url 'info' %}"> O TeamNovel </a></li>
+         <li><a href="/logout"> Wyloguj się</a></li>
+        {% endif %}
+
+
+  </ul>
+
+
+
+{% endblock %}
+<div class="container">
+{% block content %}
+
+<h1 style="color:#002c27"> TeamNovel </h1>
+    <h2 style="color:#002c27"> Zespołowe narzędzie <br> do tworzenia opowieści </h2>
+
+
+    <div class="center" style="margin-top: 5%">
+        <h3 style="color: #ED6A5E"><solid>To proste:</solid></h3>
+<h4 class="instruction "> Stwórz zespół </h4>
+     <i class="medium material-icons"> arrow_downward </i>
+<h4 class="instruction"> Dodaj do niego znajomych  </h4>
+     <i class="medium material-icons"> arrow_downward </i>
+<h4 class="instruction"> Rozpocznij opowieść </h4>
+     <i class="medium material-icons"> arrow_downward </i>
+        <h4 class="instruction"> <strong> Uwolnij kreatywność wraz z przyjaciółmi! </strong> </h4>
+        </div>
+
+<div id="current_novels">
+<h5 style="padding-top: 4%">
+    Twoja kolej w opowiadaniach:
+</h5>
+
+<ul>
+    {% for novel in current_novels %}
+    <li>
+        {{ novel.title }}
+        <a class="waves-effect waves-light btn" style="background-color:#132A27"  href="{% url 'novel' novel_id=novel.id %}"> Przejdź</a>
+    </li>
+{% endfor %}
+</ul>
+</div>
+
+{% endblock %}
+</div>
+
+
+
+</body>
+
+</main>
+
+<footer class="page-footer" style="background-color: #27544F; margin-top: 3%">
+      <div class="container">Zalogowano jako: {{ request.user.username }}</div>
+
+</footer>
+
+</html>

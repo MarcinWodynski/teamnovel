@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card z-depth-5" style="background-color: #132A27; margin-top: 2%">
+     <div class="card-content white-text">
+
+          <span class="card-title"> {{ published_novel.title }} </span>
+         <span class="card-title"> Autorstwa: {{ published_novel.team_name }} </span>
+
+    {{ published_novel.content }}
+</div>
+</div>
+
+<table style="width: 10%">
+    <tr>
+        <td>
+            <a href="{% url 'rate_novel' published_novel_id=published_novel.id %}"> <i class="medium material-icons"> thumb_up </i> </a>
+        </td>
+<td>
+    <h2>{{ likes }}</h2>
+</td>
+
+    </tr>
+    </table>
+
+{% if request.user.is_authenticated %}
+
+<form action="" method="post">
+    {% csrf_token %}
+    {{ comment_form}}
+    <input class="waves-effect waves-light btn" style="background-color:#72C0B4" type="submit" value="Przekaż">
+</form>
+
+{% endif %}
+
+<ul>
+{% for comment in comments %}
+
+    <li>
+
+<div class="card z-depth-5" style="background-color: #132A27; margin-top: 2%">
+     <div class="card-content white-text">
+
+          <span class="card-title"> {{ comment.User.username }} </span>
+
+    {{ comment.Comment }}
+</div>
+</div>
+    </li>
+
+    {% endfor %}
+</ul>
+{% endblock %}

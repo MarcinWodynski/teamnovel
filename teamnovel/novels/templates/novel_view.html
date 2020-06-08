@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="card z-depth-5" style="background-color: #132A27; margin-top: 2%">
+     <div class="card-content white-text">
+
+          <span class="card-title"> {{ novel.title }} </span>
+
+    {{ novel.content }}
+</div>
+</div>
+{% if request.user == novel.current_turn %}
+
+<div>
+<form style="margin-top: 4%" action="" method="post">
+
+    {% csrf_token %}
+    {{ form }}
+    <input class="waves-effect waves-light btn" style="background-color:#72C0B4" type="submit" value="Dopisz">
+    <div id="count" style="margin-top: 2%"> Napisałeś <div class="counter" style="display: inline-flex"> 0/300 </div> znaków </div>
+</form>
+</div>
+
+<p style="color:#ED6A5E"> {{ message }}</p>
+
+<div id="paragraph_novel" style="margin-top: 5%; margin-bottom: 2%"> <a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'skip_turn' novel_id=novel.id %}"> Opuść kolejkę </a></div>
+
+{% else %}
+
+    <div>
+<h4> Teraz fragment dopisuje {{ novel.current_turn }}</h4>
+    </div>
+{% endif %}
+
+{% if request.user == novel.team_leader %}
+
+<a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'skip_turn' novel_id=novel.id %}"> Wyznacz innego gracza </a></p>
+
+<a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'edit_novel' novel_id=novel.id %}"> Edytuj opowiadanie </a>
+
+<div style="margin-top: 2%"><a class="waves-effect waves-light btn modal-trigger" href="#modal1" style="background-color:#132A27"> Opublikuj </a></div>
+<!--<a class="waves-effect waves-light btn modal-trigger" style="background-color:#132A27" href="{% url 'publish_novel' novel_id=novel.id %}"> Opublikuj opowiadanie </a>-->
+
+<!-- Modal Structure -->
+  <div id="modal1" class="modal">
+    <div class="modal-content" style="background-color:#72C0B4">
+      <h4 style="color: #ED6A5E">Uwaga!</h4>
+      <p> Opublikowanie opowiadania zakończy zabawę i spowoduje, że będzie ono widoczne dla wszystkich użytkowników (także tych z poza zespołu).</p>
+    </div>
+    <div class="modal-footer" style="background-color: #132A27">
+      <a href="{% url 'publish_novel' novel_id=novel.id %}" class="modal-close waves-effect waves-green btn-flat" style="color:white">Przejdź do publikacji</a>
+    </div>
+  </div>
+
+
+
+{% endif %}
+
+{% endblock %}

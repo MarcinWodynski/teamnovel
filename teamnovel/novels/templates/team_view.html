@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<h2 style="color:#002c27"> Zespół {{ team.team_name }} </h2>
+
+
+
+<h3 class="team_view_h3"> Członkowie: </h3>
+
+<table style="width: 15%">
+{% for member in members %}
+
+  <tr>
+      <td>
+          <i style="display: flex" class="material-icons">person </i>
+      </td>
+      <td>
+           {{ member.username }}
+      </td>
+      {% if request.user == team.group_leader %}
+      <td>
+            <a class="waves-effect waves-light btn" style="background-color:#ED6A5E " href="{% url 'delete_member' user_id=member.id team_id=team.id %}">USUŃ</a>
+      </td>
+       {% endif %}
+  </tr>
+
+
+
+{% empty %}
+
+<tr>
+    <td>
+        <h5>> Zespół jest pusty </h5>
+    </td>
+
+</tr>
+
+{% endfor %}
+</table>
+
+ <p style="color:#ED6A5E">
+        {{ message }}
+    </p>
+
+
+ {% if request.user == team.group_leader %}
+
+<h3 class="team_view_h3">Dodaj członków zespołu: </h3>
+<form action="" method="post">
+    {% csrf_token %}
+{{ form }}
+    <input class="waves-effect waves-light btn" style="background-color:#72C0B4"  type="submit" value="Wyszukaj">
+</form>
+
+<ul>
+{% for user in users %}
+
+   <li>
+       {% if user != team.group_leader %}
+       <a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'add_member' user_id=user.id team_id=team.id %}">Dodaj</a>
+
+       {{user.username}}
+
+       {% else %}
+
+       Lider zespołu:
+
+       {{user.username}}
+       {% endif %}
+   </li>
+
+{% endfor %}
+
+</ul>
+
+{% endif %}
+
+
+<h3 class="team_view_h3"> Opowiadania </h3>
+
+<ul>
+
+    {% for novel in novels %}
+
+    <li>
+        {{ novel.title }}
+        <a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'novel' novel_id=novel.id %}"> Zobacz </a>
+
+    </li>
+
+
+    {% empty %}
+
+    <h5> Brak opowiadań </h5>
+
+    {% endfor %}
+
+</ul>
+
+{% if request.user == team.group_leader %}
+
+<a class="waves-effect waves-light btn" style="background-color:#132A27" href="{% url 'new_novel' team_id=team.id user_id=request.user.id %}"> Stwórz nowe opowiadanie </a>
+
+<div><p> UWAGA: Zespół musi mieć przynajmniej trzech graczy, żeby utworzyć opowiadanie </p></div>
+
+{% endif %}
+
+{% endblock %}

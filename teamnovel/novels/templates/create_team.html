@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<form action="" method="post">
+    {% csrf_token %}
+    {{form}}
+<input class="waves-effect waves-light btn" style="background-color:#72C0B4"  type="submit" value="Utwórz">
+</form>
+
+{% endblock %}}

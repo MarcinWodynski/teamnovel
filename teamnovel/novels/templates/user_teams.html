@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2> Lista moich zespołów:</h2>
+<ul>
+{% for team in team_owned_list %}
+
+<li><a class="waves-effect waves-light tooltipped btn" style="background-color:#132A27" data-tooltip="Kliknij, by przejść na stronę zespołu" data-position="right" href="{% url 'team_view' team.id %}">{{ team.team_name }}</a></li>
+{% endfor %}
+
+</ul>
+
+<h2>Zespoły, do których należę:</h2>
+<ul>
+    {% for team in user_teams %}
+
+    <li><a class="waves-effect waves-light tooltipped btn" style="background-color:#132A27" data-tooltip="Kliknij, by przejść na stronę zespołu" data-position="right" href="{% url 'team_view' team.id %}">{{ team.team_name }}</a></li>
+
+    {% endfor %}
+</ul>
+
+
+
+
+{% endblock %}

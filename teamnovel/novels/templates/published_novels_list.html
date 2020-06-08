@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>
+    Opublikowane opowiadania
+</h1>
+
+
+
+<ul>
+    {% for novel in published_novels %}
+   <li>
+       <a class="waves-effect waves-light tooltipped btn" style="background-color:#132A27" href="{% url 'published' published_novel_id=novel.id %}" data-tooltip="Kliknij, by przeczytać!" data-position="right"> {{ novel.title}} </a>
+   </li>
+    {% endfor %}
+</ul>
+
+
+
+
+{% endblock %}
