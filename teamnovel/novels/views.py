@@ -194,19 +194,20 @@ class NovelView(View):
             next_turn = random.randint(0, team_size)
             return next_turn
         if form.is_valid():
-            added_content = form.cleaned_data['added_content']             # nowy fragment przesłany przez formularz
-            current_content = novel.content                                # obecna część opowiadania
-            new_content = str(current_content) + " " + str(added_content)  # połączenie obecnego opowiadania z dodanym fragmentem
-            novel.content = new_content                                    # przekazanie do obiektu
-            novel.last_turn = request.user
             team = novel.team
             members = team.team_users.all()
             team_member_list = []
             for member in members:
                 team_member_list.append(member)
             team_member_list.append(team.group_leader)
-            team_size = len(team_member_list) - 1                          # zmienna z liczbą członków grupy do losowania
-            if team_size > 2:
+            team_size = len(team_member_list) - 1
+            if team_size > 3:
+                added_content = form.cleaned_data['added_content']             # nowy fragment przesłany przez formularz
+                current_content = novel.content                                # obecna część opowiadania
+                new_content = str(current_content) + " " + str(added_content)  # połączenie obecnego opowiadania z dodanym fragmentem
+                novel.content = new_content                                    # przekazanie do obiektu
+                novel.last_turn = request.user
+                                      # zmienna z liczbą członków grupy do losowania
                 next_user = team_member_list[random_user(team_size)]
                 while novel.current_turn == next_user or novel.last_turn == next_user or novel.previous_turn == next_user: # sprawdzenie, czy użytkownik, który własnie dopisał fragment nie został wybrany ponownie
                     next_user = team_member_list[random_user(team_size)]
@@ -215,11 +216,25 @@ class NovelView(View):
                     novel.save()
                     return redirect('/opowiadanie/{}'.format(novel.pk))
             else:
-                novel = Novel.objects.get(pk=novel_id)
-                form = UpdateNovelForm
-                message = "Dodaj więcej osób do zespołu, by kontynuować zabawę"
-                ctx = {'novel': novel, 'form': form, 'message': message}
-                return render(request, 'novel_view.html', ctx)
+                added_content = form.cleaned_data['added_content']  # nowy fragment przesłany przez formularz
+                current_content = novel.content  # obecna część opowiadania
+                new_content = str(current_content) + " " + str(
+                    added_content)  # połączenie obecnego opowiadania z dodanym fragmentem
+                novel.content = new_content  # przekazanie do obiektu
+                novel.last_turn = request.user
+                members = team.team_users.all()
+                team_member_list = []
+                for member in members:
+                    team_member_list.append(member)
+                team_member_list.append(team.group_leader)
+                team_size = len(team_member_list) - 1  # zmienna z liczbą członków grupy do losowania
+                next_user = team_member_list[random_user(team_size)]
+                while novel.current_turn == next_user or novel.last_turn == next_user: # sprawdzenie, czy użytkownik, który własnie dopisał fragment nie został wybrany ponownie
+                    next_user = team_member_list[random_user(team_size)]
+                else:
+                    novel.current_turn = next_user
+                    novel.save()
+                    return redirect('/opowiadanie/{}'.format(novel.pk))
 
 
 class SkipTurnView(View):

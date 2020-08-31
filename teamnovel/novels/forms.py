@@ -47,7 +47,7 @@ class EditNovelForm(forms.Form):
 
 
 class PublishNovelForm(forms.Form):
-    content = forms.CharField(label='Wprowadź ostatnie poprawki przed publikacją', initial=[], widget=forms.Textarea(attrs={'style': 'color: #27544F'}))
+    content = forms.CharField(label='Wprowadź ostatnie poprawki przed publikacją', initial=[], widget=forms.Textarea(attrs={'style': 'color: #27544F', 'class': 'materialize-textarea'}))
 
 
 class CommentPublishedNovelForm(forms.Form):

@@ -7,12 +7,10 @@ body {
      display: flex;
     min-height: 100vh;
     flex-direction: column;
-
-
 }
 
-.form_class {
-    color: #27544F
+li {
+    padding: 5px
 }
 
 body label {
@@ -24,32 +22,31 @@ body form {
     text-decoration-color: #002c27;
 }
 
+main {
+    flex: 1 0 auto;
+  }
 
-#background_nav {
-     background-color: #27544F
-}
-#slide-out {
-    background-color:  #8bb8b3
+.form_class {
+    color: #27544F
 }
 
 .collection-item {
     background-color: #9DD2CE
 }
 
-li {
-    padding: 5px
-}
-
 .page-footer {
     background-color: #27544F
 }
 
-main {
-    flex: 1 0 auto;
-  }
-
 .instruction {
    padding: 1%;
+}
+
+#background_nav {
+     background-color: #27544F
+}
+#slide-out {
+    background-color:  #8bb8b3
 }
 
 #id_current_user {
@@ -67,7 +64,6 @@ main {
 .team_view_h3 {
     margin-top: 5%
 }
-
 
 #current_novels {
     position:absolute;

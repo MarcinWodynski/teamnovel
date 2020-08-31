@@ -1,7 +1,7 @@
 
 /venv/
 /teamnovel/teamnovel/database.py
-
+venv/
 # Distribution / packaging
 .Python
 build/
